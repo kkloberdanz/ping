@@ -19,9 +19,9 @@ struct Entity {
     int y_velocity;
 };
 
-SDL_Surface* load_image(char* filename) {
-    SDL_Surface* image_loaded = NULL;
-    SDL_Surface* processed_image = NULL;
+SDL_Surface *load_image(char *filename) {
+    SDL_Surface *image_loaded = NULL;
+    SDL_Surface *processed_image = NULL;
   
     image_loaded = SDL_LoadBMP(filename);
   
@@ -117,7 +117,7 @@ int game_loop() {
             backbuffer,
             &player_paddle.pos);
 
-        unsigned char* keys = SDL_GetKeyState(NULL);
+        unsigned char *keys = SDL_GetKeyState(NULL);
         if (keys[SDLK_DOWN]) {
             player_paddle.pos.y += player_paddle.y_velocity;
             if (player_paddle.pos.y > SCREEN_HEIGHT - player_paddle.pos.h) {
