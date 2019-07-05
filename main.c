@@ -48,7 +48,6 @@ bool game_running() {
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-            case SDLK_ESCAPE:
                 return false;
 
             default:
@@ -58,7 +57,7 @@ bool game_running() {
     return true;
 }
 
-void set_random_velocity(struct Entity *entity) {
+void set_ball_velocity(struct Entity *entity) {
     if (entity->pos.x > SCREEN_WIDTH) {
         entity->x_velocity = rand_ball_velocity() * (-1);
     }
@@ -95,13 +94,44 @@ int game_loop() {
         .y_velocity = 10
     };
 
+    struct Entity player_paddle = {
+        .pos = {
+            .x = 20,
+            .y = SCREEN_HEIGHT / 2,
+            .h = 100,
+            .w = 20
+        },
+        .image = load_image("assets/player.bmp"),
+        .x_velocity = 10,
+        .y_velocity = 20
+    };
+
     SDL_Surface *background_image = load_image("assets/background.bmp");
 
     while (game_running()) {
         SDL_BlitSurface(background_image, NULL, backbuffer, NULL);
         SDL_BlitSurface(ball.image, NULL, backbuffer, &ball.pos);
+        SDL_BlitSurface(
+            player_paddle.image,
+            NULL,
+            backbuffer,
+            &player_paddle.pos);
 
-        set_random_velocity(&ball);
+        unsigned char* keys = SDL_GetKeyState(NULL);
+        if (keys[SDLK_DOWN]) {
+            player_paddle.pos.y += player_paddle.y_velocity;
+            if (player_paddle.pos.y > SCREEN_HEIGHT - player_paddle.pos.h) {
+                player_paddle.pos.y = SCREEN_HEIGHT - player_paddle.pos.h;
+            }
+        } else if (keys[SDLK_UP]) {
+            player_paddle.pos.y -= player_paddle.y_velocity;
+            if (player_paddle.pos.y < 0) {
+                player_paddle.pos.y = 0;
+            }
+        } else if (keys[SDLK_ESCAPE]) {
+            return 0;
+        }
+        set_ball_velocity(&ball);
 
         SDL_Flip(backbuffer);
         SDL_Delay(20);

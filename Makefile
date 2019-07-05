@@ -9,3 +9,4 @@ ping:
 clean:
 	rm -f a.out
 	rm -f core
+	rm -f ping
