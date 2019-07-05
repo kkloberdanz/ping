@@ -25,17 +25,15 @@ SDL_Surface* load_image(char* filename) {
   
     image_loaded = SDL_LoadBMP(filename);
   
-    if(image_loaded != NULL) {
+    if (image_loaded != NULL) {
         processed_image = SDL_DisplayFormat(image_loaded);
         SDL_FreeSurface(image_loaded);
   
-        if (processed_image != NULL ) {
-            int colorKey = SDL_MapRGB(processed_image->format, 0xFF, 0, 0xFF );
-            SDL_SetColorKey(processed_image, SDL_SRCCOLORKEY, colorKey );
+        if (processed_image != NULL) {
+            int color_key = SDL_MapRGB(processed_image->format, 0xFF, 0, 0xFF);
+            SDL_SetColorKey(processed_image, SDL_SRCCOLORKEY, color_key);
         }
-  
     }
-  
     return processed_image;
 }
 
@@ -82,7 +80,9 @@ void set_random_velocity(struct Entity *entity) {
 }
 
 int game_loop() {
-    SDL_Surface *backbuffer = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_SWSURFACE);
+    SDL_Surface *backbuffer = SDL_SetVideoMode(
+        SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_SWSURFACE);
+
     struct Entity ball = {
         .pos = {
             .x = SCREEN_WIDTH / 2,
