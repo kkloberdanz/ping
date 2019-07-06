@@ -146,7 +146,7 @@ restart_game: {
             },
             .image = load_image("assets/enemy.bmp"),
             .x_velocity = 0,
-            .y_velocity = 15
+            .y_velocity = 10
         };
 
         SDL_Surface *background_image = load_image("assets/background.bmp");
