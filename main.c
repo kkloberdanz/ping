@@ -9,7 +9,8 @@ enum {
     MAX_VELOCITY = 20,
     MIN_VELOCITY = 5,
     SCREEN_WIDTH = 800,
-    SCREEN_HEIGHT = 600
+    SCREEN_HEIGHT = 600,
+    WINNING_SCORE = 10
 };
 
 enum GameState {
@@ -115,8 +116,8 @@ int game_loop() {
     SDL_Surface *background_image = load_image("assets/background.bmp");
 
 
-/* ensure tail recursion */
-restart_game: {
+restart_game:
+    while (player_score < WINNING_SCORE && enemy_score < WINNING_SCORE) {
         printf("player: %d, enemy: %d\n", player_score, enemy_score);
         struct Entity ball = {
             .pos = {
@@ -144,7 +145,7 @@ restart_game: {
 
         struct Entity enemy_paddle = {
             .pos = {
-                .x = SCREEN_WIDTH - 20,
+                .x = SCREEN_WIDTH - 40,
                 .y = SCREEN_HEIGHT / 2,
                 .h = 100,
                 .w = 20
@@ -206,26 +207,39 @@ restart_game: {
                     break;
             }
 
-            if (enemy_paddle.pos.y == ball.pos.y + 10) {
+            int enemy_bottom = enemy_paddle.pos.y + enemy_paddle.pos.h;
+            if (enemy_paddle.pos.y < ball.pos.y && enemy_bottom > ball.pos.y) {
                 enemy_direction = 0;
-            } else if (enemy_paddle.pos.y < ball.pos.y + 10) {
+            } else if (enemy_paddle.pos.y < ball.pos.y - 50) {
                 enemy_direction = 1;
             } else {
                 enemy_direction = -1;
             }
 
             enemy_paddle.pos.y += enemy_direction * enemy_paddle.y_velocity;
+            if (enemy_paddle.pos.y > SCREEN_HEIGHT - enemy_paddle.pos.h) {
+                enemy_paddle.pos.y = SCREEN_HEIGHT - enemy_paddle.pos.h;
+            } else if (enemy_paddle.pos.y < 0) {
+                enemy_paddle.pos.y = 0;
+            }
 
             SDL_Flip(backbuffer);
             SDL_Delay(20);
         }
-        SDL_FreeSurface(ball_image);
-        SDL_FreeSurface(enemy_image);
-        SDL_FreeSurface(player_image);
-        SDL_FreeSurface(background_image);
-        SDL_FreeSurface(backbuffer);
-        return 0;
     }
+
+    if (player_score >= WINNING_SCORE) {
+        puts("YOU WIN!");
+    } else {
+        puts("YOU LOSE!");
+    }
+
+    SDL_FreeSurface(ball_image);
+    SDL_FreeSurface(enemy_image);
+    SDL_FreeSurface(player_image);
+    SDL_FreeSurface(background_image);
+    SDL_FreeSurface(backbuffer);
+    return 0;
 }
 
 int main(void) {
