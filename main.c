@@ -109,6 +109,11 @@ int game_loop() {
 
     int player_score = 0;
     int enemy_score = 0;
+    SDL_Surface *player_image = load_image("assets/player.bmp");
+    SDL_Surface *enemy_image = load_image("assets/enemy.bmp");
+    SDL_Surface *ball_image = load_image("assets/ball.bmp");
+    SDL_Surface *background_image = load_image("assets/background.bmp");
+
 
 /* ensure tail recursion */
 restart_game: {
@@ -120,7 +125,7 @@ restart_game: {
                 .h = 10,
                 .w = 10
             },
-            .image = load_image("assets/ball.bmp"),
+            .image = ball_image,
             .x_velocity = rand_ball_velocity(),
             .y_velocity = rand_ball_velocity()
         };
@@ -132,7 +137,7 @@ restart_game: {
                 .h = 100,
                 .w = 20
             },
-            .image = load_image("assets/player.bmp"),
+            .image = player_image,
             .x_velocity = 0,
             .y_velocity = 30
         };
@@ -144,12 +149,10 @@ restart_game: {
                 .h = 100,
                 .w = 20
             },
-            .image = load_image("assets/enemy.bmp"),
+            .image = enemy_image,
             .x_velocity = 0,
             .y_velocity = 10
         };
-
-        SDL_Surface *background_image = load_image("assets/background.bmp");
 
         while (game_running()) {
             int enemy_direction = 0;
@@ -215,6 +218,11 @@ restart_game: {
             SDL_Flip(backbuffer);
             SDL_Delay(20);
         }
+        SDL_FreeSurface(ball_image);
+        SDL_FreeSurface(enemy_image);
+        SDL_FreeSurface(player_image);
+        SDL_FreeSurface(background_image);
+        SDL_FreeSurface(backbuffer);
         return 0;
     }
 }
