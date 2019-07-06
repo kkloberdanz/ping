@@ -175,8 +175,9 @@ restart_game: {
             unsigned char *keys = SDL_GetKeyState(NULL);
             if (keys[SDLK_DOWN]) {
                 player_paddle.pos.y += player_paddle.y_velocity;
-                if (player_paddle.pos.y > SCREEN_HEIGHT - player_paddle.pos.h) {
-                    player_paddle.pos.y = SCREEN_HEIGHT - player_paddle.pos.h;
+                int max_player_height = SCREEN_HEIGHT - player_paddle.pos.h;
+                if (player_paddle.pos.y > max_player_height) {
+                    player_paddle.pos.y = max_player_height;
                 }
             } else if (keys[SDLK_UP]) {
                 player_paddle.pos.y -= player_paddle.y_velocity;
