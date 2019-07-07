@@ -108,7 +108,6 @@ int game_loop() {
     SDL_Surface *ball_image = load_image("assets/ball.bmp");
     SDL_Surface *background_image = load_image("assets/background.bmp");
 
-
 restart_game:
     while (player_score < WINNING_SCORE && enemy_score < WINNING_SCORE) {
         printf("player: %d, enemy: %d\n", player_score, enemy_score);
@@ -164,7 +163,6 @@ restart_game:
                 NULL,
                 backbuffer,
                 &enemy_paddle.pos);
-
 
             unsigned char *keys = SDL_GetKeyState(NULL);
             if (keys[SDLK_DOWN]) {
