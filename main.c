@@ -7,7 +7,7 @@
 
 enum {
     MAX_VELOCITY = 20,
-    MIN_VELOCITY = 5,
+    MIN_VELOCITY = 10,
     SCREEN_WIDTH = 800,
     SCREEN_HEIGHT = 600,
     WINNING_SCORE = 10
@@ -29,13 +29,13 @@ struct Entity {
 SDL_Surface *load_image(char *filename) {
     SDL_Surface *image_loaded = NULL;
     SDL_Surface *processed_image = NULL;
-  
+
     image_loaded = SDL_LoadBMP(filename);
-  
+
     if (image_loaded != NULL) {
         processed_image = SDL_DisplayFormat(image_loaded);
         SDL_FreeSurface(image_loaded);
-  
+
         if (processed_image != NULL) {
             int color_key = SDL_MapRGB(processed_image->format, 0xFF, 0, 0xFF);
             SDL_SetColorKey(processed_image, SDL_SRCCOLORKEY, color_key);
@@ -65,17 +65,10 @@ bool game_running() {
 }
 
 bool obj_touching(SDL_Rect *rect1, SDL_Rect *rect2) {
-    if (rect1->x >= rect2->x + rect2->w) {
-        return false;
-    } else if (rect1->y >= rect2->y + rect2->h) {
-        return false;
-    } else if (rect2->x >= rect1->x + rect1->w) {
-        return false;
-    } else if (rect2->y >= rect1->y + rect1->h) {
-        return false;
-    } else {
-        return true;
-    }
+    return !(rect1->x >= rect2->x + rect2->w) &&
+           !(rect1->y >= rect2->y + rect2->h) &&
+           !(rect2->x >= rect1->x + rect1->w) &&
+           !(rect2->y >= rect1->y + rect1->h);
 }
 
 enum GameState do_game_logic(
