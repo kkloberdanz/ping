@@ -4,7 +4,7 @@ run: ping
 	./ping
 
 ping:
-	gcc -o ping main.c -lSDL $(WARN_FLAGS) -ggdb3 -Og
+	gcc -o ping main.c -lSDL $(WARN_FLAGS) -ggdb3 -Os
 
 clean:
 	rm -f a.out

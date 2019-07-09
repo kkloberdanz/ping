@@ -177,7 +177,7 @@ restart_game:
                     player_paddle.pos.y = 0;
                 }
             } else if (keys[SDLK_ESCAPE]) {
-                return 0;
+                goto cleanup;
             }
 
             enum GameState game_state = do_game_logic(
@@ -225,6 +225,7 @@ restart_game:
         puts("YOU LOSE!");
     }
 
+cleanup:
     SDL_FreeSurface(ball_image);
     SDL_FreeSurface(enemy_image);
     SDL_FreeSurface(player_image);
